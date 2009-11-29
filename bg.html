@@ -1,0 +1,49 @@
+<script type='text/javascript'>
+	var req;
+	var url;
+	chrome.extension.onConnect.addListener(onPortConnect); 
+	function onPortConnect(port) {
+		if(port.name=="port")
+			port.onMessage.addListener(onMessageRecieved);  
+	} 
+
+	function onMessageRecieved(data,port) { 
+		var req = new XMLHttpRequest();
+		var url=data.message;
+		req.open("GET",url,true);
+		req.onload =function() {parseResult(this,port)};
+		req.send(null);
+	} 
+	
+	function parseResult(xhr,port){
+		var resultDom=new DOMParser().parseFromString(xhr.responseText,'text/xml');
+		var topics=resultDom.getElementsByTagName('folder');
+		var arr=new Array();
+		if (topics.length>0){
+			var sResult;
+			var title;
+			var link;
+			var result=null;
+			for (var i=0;i<10;i++) {
+				if (i>=topics.length) {
+					break;
+				}
+				sResult=topics.item(i);
+				title=sResult.getElementsByTagName('name').item(0).firstChild.nodeValue;
+				link=sResult.getElementsByTagName('link').item(0).firstChild.nodeValue;
+				result=new ResultObj(title,link);
+				arr.push(result);
+			}
+		}
+		sendBack(port,arr);
+	}
+
+	function sendBack(port,arr){
+		port.postMessage({message: arr}); 
+	}
+
+	function ResultObj(title,link){
+		this.title=title;
+		this.link=link;
+	}
+</script>

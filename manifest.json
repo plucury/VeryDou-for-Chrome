@@ -1,0 +1,16 @@
+{
+  "name": "VeryDou",
+  "version": "1.0",
+  "description": "在豆瓣页显示VeryCD下载信息",
+  "permissions": [
+    "http://www.verycd.com/"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["http://www.douban.com/subject/*"],
+      "js": ["jquery.js","verydou.js"]
+    }
+  ],
+  "background_page": "bg.html"
+}
+
