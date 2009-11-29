@@ -1,13 +1,13 @@
 {
   "name": "VeryDou",
-  "version": "1.0",
+  "version": "1.1",
   "description": "在豆瓣页显示VeryCD下载信息",
   "permissions": [
     "http://www.verycd.com/"
   ],
   "content_scripts": [
     {
-      "matches": ["http://www.douban.com/subject/*"],
+      "matches": ["http://www.douban.com/subject/*","http://www.douban.com/subject_search?search_text=*"],
       "js": ["jquery.js","verydou.js"]
     }
   ],
